@@ -1,0 +1,393 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Secret Garden · A letter, just for you</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Noto+Serif+Tamil:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+  :root{--bg:#f4ecdc;--card:#fdfbf6;--burg:#8a1426;--burg-d:#5c0c1a;--gold:#c18a22;--ink:#2f2420;--mute:#8a7a6c;--line:#e6d9c3;
+    --serif:"Cormorant Garamond","Noto Serif Tamil",Georgia,serif;--ta:"Noto Serif Tamil","Cormorant Garamond",serif;--sans:Inter,system-ui,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--sans);color:var(--ink);background:var(--bg) url(assets/bg.jpg) center 25%/cover fixed;min-height:100vh;display:flex;flex-direction:column}
+  body::before{content:"";position:fixed;inset:0;background:linear-gradient(rgba(250,244,230,.68),rgba(250,244,230,.84));pointer-events:none;z-index:0;transition:background .5s}
+  body.read::before{background:linear-gradient(rgba(250,248,243,.78),rgba(250,248,243,.88))}
+  svg.i{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.12em}
+  .mast,.foot,main{position:relative;z-index:1;width:min(1180px,100%);margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+  .mast{margin-top:14px;display:flex;justify-content:space-between;align-items:center;padding-block:18px;border-bottom:1px solid var(--line);padding-top:max(18px,env(safe-area-inset-top))}
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{width:34px;height:34px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-size:16px}
+  .brand small,.eyebrow{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+  .mast .r{font-size:12px;color:var(--mute)}
+  .mast-actions{display:flex;align-items:center;gap:14px}
+  .music-toggle{border:1px solid var(--line);background:rgba(253,251,246,.78);color:var(--burg);border-radius:99px;padding:8px 13px;font:500 11px var(--sans);cursor:pointer}
+  .music-toggle:hover{background:#fff8eb;border-color:var(--gold)}
+  .music-toggle:focus-visible{outline:2px solid var(--burg);outline-offset:3px}
+
+  main{flex:1;padding-block:28px;display:flex;flex-direction:column}
+  .foot{display:flex;justify-content:space-between;padding-block:22px;border-top:1px solid var(--line);font:italic 1.1rem var(--serif);color:var(--mute)}
+  .foot span{font:500 10px var(--sans);letter-spacing:.16em;text-transform:uppercase}
+  .hide{display:none!important}
+  .mast,.row,.cap2,.foot{text-shadow:0 0 10px rgba(250,244,230,.95),0 0 4px rgba(250,244,230,.9)}
+  .ta{font-family:var(--ta)!important;font-weight:600;line-height:1.35!important}
+
+  /* LOCK — centered single-card layout */
+  #lockScreen{flex:1;display:flex;flex-direction:column;justify-content:center}
+  .row{display:flex;justify-content:flex-end;margin-bottom:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+  .hero{display:grid;grid-template-columns:minmax(0,1fr);width:min(100%,680px);margin:0 auto;border-radius:6px;overflow:hidden;box-shadow:0 18px 50px rgba(60,30,20,.18)}
+  .panel{background:rgba(214,207,195,.72);display:grid;place-items:center;padding:clamp(18px,4vw,36px);position:relative;overflow:hidden;min-height:560px}
+  .panel::before{content:"";position:absolute;inset:0;background:url(assets/paper.webp) center/300px;filter:grayscale(.8) blur(2px);opacity:.5}
+  .paper{position:relative;width:min(100%,520px);padding:clamp(38px,6vw,54px) clamp(24px,5vw,52px) 34px;text-align:center}
+  .paper::before{content:"";position:absolute;inset:0;background:#fbf6ea url(assets/paper.webp) center/cover;filter:url(#torn) drop-shadow(0 10px 18px rgba(60,40,20,.28));z-index:0}
+  .paper>*{position:relative;z-index:1}
+  .pill{display:inline-flex;gap:8px;align-items:center;font-size:11px;background:rgba(185,138,74,.16);color:var(--burg-d);border-radius:99px;padding:7px 14px}
+  .paper h1{font-size:2.1rem;color:var(--burg-d);margin:26px 0 14px}
+  .paper .sub{font:500 1.25rem var(--serif);color:#6b4a40}
+  .orn{display:flex;align-items:center;gap:12px;justify-content:center;margin:22px 0 20px;color:var(--gold);font-size:22px}
+  .orn::before,.orn::after{content:"";width:46px;height:1px;background:var(--gold);opacity:.6}
+  .hint{font:italic 1rem var(--serif);color:#6b4a40;margin-bottom:14px}
+  .field{display:flex;align-items:center;gap:10px;background:#fffdf7;border:1px solid var(--line);border-radius:4px;padding:0 14px;height:48px;color:var(--mute)}
+  .field input{flex:1;border:0;background:none;font:italic 1rem var(--serif);color:var(--ink);outline:none;min-width:0}
+  .field button{border:0;background:none;color:var(--mute);cursor:pointer;font-size:16px}
+  .field:focus-within{border-color:var(--burg);box-shadow:0 0 0 3px rgba(123,42,44,.12)}
+  .open{width:100%;margin-top:12px;height:48px;border:0;border-radius:3px;background:var(--burg);color:#fff;font:600 1.05rem var(--serif);cursor:pointer;letter-spacing:.02em}
+  .open:hover{background:var(--burg-d)}
+  .err{min-height:20px;margin-top:10px;font-size:12px;color:var(--burg)}
+  .shake{animation:sh .4s}@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+  .cap2{text-align:center;margin-top:16px;font:italic 1rem var(--serif);color:var(--gold)}
+
+  /* ENVELOPE SCREEN */
+  .env-wrap{display:flex;flex-direction:column;align-items:center;text-align:center;padding:30px 0 60px;animation:rise .8s both}
+  .env-title{font-size:clamp(1.8rem,5vw,3rem);color:var(--burg);margin:22px 0 6px}
+  .env-sub{font:italic 600 1.5rem var(--serif);color:var(--burg-d);margin-bottom:60px}
+  .envelope{position:relative;width:min(340px,86vw);height:230px;cursor:pointer;border-radius:12px;
+    background:linear-gradient(135deg,#a8283a,#7a1424 60%,#5c0c1a);border:4px solid var(--gold);
+    box-shadow:0 25px 50px rgba(92,12,26,.45);transition:transform .3s;perspective:900px}
+  .envelope:hover{transform:scale(1.04)}
+  .envelope::after{content:"";position:absolute;inset:8px;border:1px dashed rgba(243,210,122,.7);border-radius:8px;pointer-events:none}
+  .env-flap{position:absolute;top:0;left:0;right:0;height:58%;background:#4a0a16;z-index:3;
+    clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center;transition:transform .8s ease,z-index 0s .4s}
+  .env-letter{position:absolute;left:9%;right:9%;top:8%;bottom:8%;background:#fffaf0;border-radius:6px;z-index:2;
+    display:grid;place-items:center;color:var(--burg);font-size:2rem;transition:transform .9s ease .6s}
+  .seal{position:absolute;left:50%;top:50%;width:78px;height:78px;margin:-39px 0 0 -39px;z-index:4;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#f3d27a,#c18a22 60%,#8a5d10);border:2px solid #fbe9b0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--burg-d);font-size:26px;
+    box-shadow:0 8px 20px rgba(0,0,0,.4);transition:transform .5s,opacity .5s}
+  .seal small{font:800 8px var(--sans);letter-spacing:.15em}
+  .envelope:hover .seal{transform:scale(1.1)}
+  .callout{margin-top:44px;background:#f3d27a;color:var(--burg-d);font-weight:700;font-size:13px;padding:10px 20px;border-radius:99px;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+  .envelope.open{cursor:default;transform:none}
+  .envelope.open .seal{transform:scale(1.8) rotate(25deg);opacity:0;pointer-events:none}
+  .envelope.open .env-flap{transform:rotateX(180deg);z-index:1}
+  .envelope.open .env-letter{transform:translateY(-75%)}
+  .unfold{animation:unfold .9s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes unfold{from{opacity:0;transform:translateY(60px) scale(.94)}to{opacity:1;transform:none}}
+  @keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+  /* READ */
+  .read-grid{display:grid;grid-template-columns:270px 1fr;gap:28px;align-items:start}
+  .side .eyebrow{color:var(--burg);display:block;margin-bottom:14px}
+  .side img{width:100%;aspect-ratio:4/4.6;object-fit:cover;border-radius:3px;box-shadow:0 8px 24px rgba(60,30,20,.2);background:#e6d9c3}
+  .side h3{font:600 1.45rem/1.55 var(--ta);color:var(--burg);margin:22px 0 12px}
+  .side p{font-size:12px;line-height:1.7;color:var(--mute)}
+  .side hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+  .side li{list-style:none;font-size:12px;color:var(--mute);margin:10px 0;display:flex;gap:8px;align-items:center}
+  .sheet{background:var(--card);border:1px solid var(--line);border-radius:4px;box-shadow:0 8px 30px rgba(60,30,20,.1)}
+  .tools{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid var(--line);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+  .tools div{display:flex;gap:8px}
+  .tb{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);background:#f8f3e8;border-radius:5px;padding:7px 12px;font:500 12px var(--sans);letter-spacing:0;text-transform:none;color:var(--ink);cursor:pointer}
+  .tb:hover{background:#efe6d3}
+  .body{position:relative;padding:clamp(24px,6vw,64px) clamp(20px,7vw,80px) 28px}
+  .art{position:absolute;top:14px;right:18px;width:90px;opacity:.6;pointer-events:none;mix-blend-mode:multiply}
+  .meta{display:flex;justify-content:space-between;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+  .meta i{font-style:normal;letter-spacing:0;font-size:11px;text-transform:none;color:var(--mute)}
+  .body h1{font:500 clamp(2.4rem,6vw,3.4rem)/1.15 var(--serif);color:var(--burg);margin:8px 0 14px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  #txt{font-size:14px;line-height:1.8;min-height:420px}
+  #txt p{margin:0}#txt .sp{margin-top:16px}
+  #txt .hi{font:italic 500 1.7rem var(--serif);color:var(--burg)}
+  #txt h2{font:600 1.5rem/1.5 var(--ta);color:var(--burg);margin-top:30px}
+  .cursor{display:inline-block;width:2px;height:1em;background:var(--burg);vertical-align:-.12em;animation:bl .8s steps(1) infinite}@keyframes bl{50%{opacity:0}}
+  .sig{text-align:right;margin-top:30px}
+  .sig span{display:block;font:italic 500 1.3rem var(--serif);color:var(--mute)}
+  .sig b{font:italic 600 2rem var(--serif);color:var(--burg)}
+  .end{margin-top:30px;text-align:center;font-size:10px;color:var(--mute)}
+  .end .orn{margin:0 0 8px;font-size:18px}
+
+  .together{margin-top:34px;display:grid;grid-template-columns:minmax(260px,400px) 1fr;gap:34px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:4px;box-shadow:0 8px 30px rgba(60,30,20,.1);padding:clamp(20px,4vw,40px)}
+  .face{position:relative;width:100%;aspect-ratio:1199/1312}
+  .face img{width:100%;height:100%;display:block;object-fit:contain}
+  .face svg{position:absolute;inset:0;width:100%;height:100%}
+  .tg h2{font:600 1.7rem/1.5 var(--ta);color:var(--burg);margin:6px 0 8px}
+  .tg p{font-size:13px;color:var(--mute);line-height:1.7}
+  .live{font:500 2.2rem var(--serif);color:var(--ink);margin:16px 0 4px;font-variant-numeric:tabular-nums}
+  .units{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+  .units div{border:1px solid var(--line);background:#fbf5e8;border-radius:4px;padding:12px 6px;text-align:center}
+  .units b{display:block;font:600 1.9rem/1 var(--serif);color:var(--burg);font-variant-numeric:tabular-nums}
+  .units small{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+  .total{margin-top:16px;font:italic 500 1.25rem var(--serif);color:var(--burg-d)}
+  @media(max-width:820px){.together{grid-template-columns:1fr}.panel{min-height:520px;padding:16px}.read-grid{grid-template-columns:1fr}.side img{aspect-ratio:16/10}.art{width:64px}}
+  @media(max-width:480px){.mast-actions{gap:8px}.music-toggle{padding:7px 9px;font-size:10px}.mast .r{font-size:10px}}
+  @media(prefers-reduced-motion:reduce){.shake,.cursor{animation:none}}
+  </style>
+  </head>
+  <body>
+  <!-- Replace song.mp3 with your music file name if it is different. -->
+  <audio id="bgMusic" src="assets/song.mp3" loop preload="auto"></audio>
+  <svg width="0" height="0" style="position:absolute"><defs>
+  <filter id="torn" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="4" seed="7"/><feDisplacementMap in="SourceGraphic" scale="16"/></filter>
+  <symbol id="key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="4"/><path d="M10.5 12.5 21 2M16 7l3 3M14 9l2 2"/></symbol>
+  <symbol id="eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+  <symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></symbol>
+  <symbol id="heart" viewBox="0 0 24 24"><path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z"/></symbol>
+  <symbol id="cal" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/></symbol>
+  <symbol id="pen" viewBox="0 0 24 24"><path d="M4 20l1-4L16 5l3 3L8 19z"/></symbol>
+  <symbol id="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="orn" viewBox="0 0 24 24"><path d="M12 3l5 9-5 9-5-9z"/><path d="M3 12l9-5 9 5-9 5z"/><circle cx="12" cy="12" r="1.2"/><circle cx="3" cy="3" r=".9"/><circle cx="21" cy="3" r=".9"/><circle cx="3" cy="21" r=".9"/><circle cx="21" cy="21" r=".9"/></symbol>
+  </defs></svg>
+
+  <header class="mast">
+    <div class="brand"><div class="logo"><svg class="i"><use href="#orn"/></svg></div><div><small id="mtag">Happy Birthday Chello - 02.11.2005</small></div></div>
+    <div class="mast-actions">
+      <button class="music-toggle" id="musicToggle" type="button" aria-pressed="false">♫ Music: Off</button>
+      <div class="r" id="mr"><svg class="i"><use href="#lock"/></svg></div>
+    </div>
+  </header>
+
+  <main>
+  <!-- 1. LOCK -->
+  <section id="lockScreen">
+    <div class="row"><b></b><i class="dt"></i></div>
+    <div class="hero">
+      <div class="panel"><div class="paper" id="paper">
+        <span class="pill"><svg class="i"><use href="#mail"/></svg>Happy Birthday di...Chelloo😘</span>
+        <h1 class="ta">உனக்காக ஒரு கடிதம்</h1>
+        <p class="sub">Ithu ennoda chinna gift uh</p>
+        <div class="orn"><svg class="i"><use href="#orn"/></svg></div>
+        <p class="hint">Mudincha password kandupudichuko dii... ❤️</p>
+        <div class="field"><svg class="i"><use href="#key"/></svg><input id="code" type="password" autocomplete="off" aria-label="Secret code"><button id="eye" aria-label="Show code"><svg class="i"><use href="#eye"/></svg></button></div>
+        <button class="open" id="openBtn">Enter to my heart dii chello...🤌 →</button>
+        <div class="err" id="err" role="alert"></div>
+      </div></div>
+    </div>
+    <p class="cap2"><svg class="i"><use href="#lock"/></svg></p>
+  </section>
+
+  <!-- 2. ENVELOPE -->
+  <section id="envScreen" class="hide">
+    <div class="env-wrap">
+      <span class="pill"><svg class="i"><use href="#mail"/></svg></span>
+      <h2 class="ta env-title">என் கையால் எழுதிய கடிதம்😘</h2>
+      <p class="env-sub"></p>
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Break the seal">
+        <div class="env-letter"><span>❤</span></div>
+        <div class="env-flap"></div>
+        <div class="seal"><svg class="i"><use href="#heart"/></svg><small>SEALED</small></div>
+      </div>
+      <span class="callout">Open pannu dii chellam ✨</span>
+    </div>
+  </section>
+
+  <!-- 3. LETTER -->
+  <section id="read" class="hide">
+    <div class="read-grid">
+      <aside class="side">
+        <span class="eyebrow"><svg class="i"><use href="#unlock"/></svg></span>
+        <img src="assets/side.webp" alt="" onerror="this.style.display='none'">
+        <h3>கொஞ்சம் ரகசியம்.<br>நிறைய காதல்.</h3>
+        <p><span class="nm"></span><br>En Chello🤌</p>
+        <hr>
+        <ul><li><svg class="i"><use href="#cal"/></svg><span class="dt"></span></li><li><svg class="i"><use href="#he"/></svg></li></ul>
+      </aside>
+      <div class="sheet">
+        <div class="tools"><span><svg class="i"><use href="#pen"/></svg></span>
+          <div><button class="tb" id="close" aria-label="Close letter"><svg class="i"><use href="#x"/></svg></button></div></div>
+        <div class="body">
+          <img class="art" src="assets/art.webp" alt="" onerror="this.style.display='none'">
+          <div class="meta"><span>Ennoda</span><i class="dt"></i></div>
+          <h1><span class="nm"></span>-kku ❤️</h1>
+          <div id="txt"></div>
+          <div class="sig"><span>Endrum Unadhu,</span><b id="so"></b></div>
+          <div class="end"><div class="orn"><svg class="i"><use href="#orn"/></svg></div> <span class="dt"></span></div>
+        </div>
+      </div>
+    </div>
+    <section class="together">
+      <div class="face"><img src="assets/clock.webp" alt="Our clock" onerror="this.style.display='none'">
+        <svg viewBox="0 0 1199 1312" aria-hidden="true">
+          <path id="hHr" d="M594 612 L603 270 L609 270 L618 612 Z" fill="#14100e"/>
+          <path id="hMn" d="M596 620 L604 215 L608 215 L616 620 Z" fill="#14100e"/>
+          <g id="hSc"><line x1="606" y1="700" x2="606" y2="190" stroke="#d62323" stroke-width="5" stroke-linecap="round"/><circle cx="606" cy="593" r="12" fill="#d62323"/></g>
+          <circle cx="606" cy="593" r="22" fill="#b8892f" stroke="#f3d27a" stroke-width="4"/>
+        </svg></div>
+      <div class="tg">
+        <span class="eyebrow">Namma kaadhal neram</span>
+        <h2>நம் காதல் நேரம்</h2>
+        <p>23 From December 2024❤️</p>
+        <div class="live" id="dig"></div>
+        <div class="units">
+          <div><b id="uy">0</b><small>Years</small></div><div><b id="um">0</b><small>Month</small></div><div><b id="ud">0</b><small>Day</small></div>
+          <div><b id="uh">0</b><small>Hour</small></div><div><b id="un">0</b><small>Minute</small></div><div><b id="us">0</b><small>Second</small></div>
+        </div>
+        <p class="total" id="tot"></p>
+      </div>
+    </section>
+  </section>
+  </main>
+
+  <footer class="foot"><em></em><span>By Karthik</span></footer>
+
+  <script>
+  /* ========= CUSTOMISE HERE ========= */
+  const SECRET_CODE = 'Senior';            // not case-sensitive
+  const LOVER_NAME  = 'Chellam';
+  const LETTER_DATE = '02 November 2026';
+  const SIGN_OFF    = 'Un Senior, Un Kaadhalan';
+  const LETTER = `> {name} ❤️,
+
+  Happiest Birthday, Chellammmm! ❤️🫂🎂
+
+  Sorry dii, ennaala intha birthday un kooda irukka mudiyala. 🥺 But namma next birthday kandippa onna thaan celebrate pannuvom! ❤️
+
+  Edhukkagavum ini nee feel pannadha dii. Innaikku la irundhu nee edhukkum worry aaga koodathu. Eppadiyum unkoodave irundhu unna tension panna poren! 😂❤️ So, don't worry, naa eppovume un kooda iruppen. 🫂
+
+  Neeyum college mudichittu un life-oda next phase-ku vara pora. So, eppovume motivated-ah iru! 💪❤️ Epadiyachum oru 12 LPA package vaangiru dii... Appo thaan naan house husband-ah aaga mudiyum! 🏡
+
+  Eppovume naa iruppen dii, idhu un mela promise! ❤️ Konjam naal pogattum, namma kandippa onna thaan irukka porom. Life-la chinna kashtama irundhaalum sari, periya problem-ah irundhaalum sari, enkitta solliru. Namma rendu perum serndhu atha face pannipom. Unakku naan irukken, enakku nee irukka. That's enough! ❤️
+
+  Eppovume solrathu thaan dii... Nee illama ennaala irukka mudiyathu. ❤️ So, konjam wait pannu chellam, seekirama vandhu unna kootittu poren! 🫂😘
+
+  Love you so much dii, en chellameyyyy! ❤️♾️
+
+  Last-ah oru vishayam... Innaikku indha special day-la naan unna ivlo happy-ah wish panna reason-ah irundha Manimaran sir-ku kandippa oru thanks solliru! 😘❤️
+
+  Once again, Happiest Birthday, my love! 🎂💗
+  Eppovume happy-ah iru, sirichitte iru❤️😘
+
+  **Love you dii, chellameyyyy! ❤️🫂♾️**`;
+  /* =================================== */
+
+  const $=id=>document.getElementById(id);
+  const $$=s=>document.querySelectorAll(s);
+  let text=LETTER,idx=0,timer=null,audio=null;
+
+  /* Background birthday song */
+  const bgMusic=$('bgMusic');
+  const musicToggle=$('musicToggle');
+
+  async function playBackgroundMusic(){
+    if(!bgMusic) return;
+    try{
+      await bgMusic.play();
+      musicToggle.textContent='♫ Music: On';
+      musicToggle.setAttribute('aria-pressed','true');
+    }catch(error){
+      // Browser autoplay may be blocked until the visitor interacts.
+      musicToggle.textContent='♫ Play Music';
+      musicToggle.setAttribute('aria-pressed','false');
+    }
+  }
+
+  function pauseBackgroundMusic(){
+    if(!bgMusic) return;
+    bgMusic.pause();
+    musicToggle.textContent='♫ Music: Off';
+    musicToggle.setAttribute('aria-pressed','false');
+  }
+
+  musicToggle.addEventListener('click',()=>{
+    if(bgMusic.paused) playBackgroundMusic();
+    else pauseBackgroundMusic();
+  });
+
+  // Try autoplay on page load; retry after the password button is clicked.
+  playBackgroundMusic();
+
+  $$('.nm').forEach(n=>n.textContent=LOVER_NAME);
+  $$('.dt').forEach(n=>n.textContent=LETTER_DATE);
+  $('so').textContent=SIGN_OFF;
+
+  /* pen sound */
+  function scratch(){try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;
+    o.type='triangle';o.frequency.value=380+Math.random()*200;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.012,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.06);
+    o.connect(g);g.connect(audio.destination);o.start();o.stop(t+.07)}catch(e){}}
+
+  /* letter rendering */
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  function fmt(raw,cursor){
+    let out='',gap=false;
+    raw.replace(/\{name\}/g,LOVER_NAME).split('\n').forEach(l=>{
+      if(!l.trim()){gap=true;return}
+      const c=gap?'sp':'';gap=false;
+      if(l.startsWith('## '))out+=`<h2>${esc(l.slice(3))}</h2>`;
+      else if(l.startsWith('> '))out+=`<p class="hi">${esc(l.slice(2))}</p>`;
+      else out+=`<p class="${c}">${esc(l).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')}</p>`;
+    });
+    return out+(cursor?'<span class="cursor"></span>':'');
+  }
+  function write(){clearTimeout(timer);
+    if(idx>=text.length){$('txt').innerHTML=fmt(text,false);return}
+    idx+=2;$('txt').innerHTML=fmt(text.slice(0,idx),true);if(idx%12===0)scratch();timer=setTimeout(write,22)}
+  function start(){idx=0;write()}
+
+  /* 1) password -> envelope */
+  function unlock(){
+    if($('code').value.trim().toLowerCase()!==SECRET_CODE.toLowerCase()){
+      const p=$('paper');p.classList.remove('shake');void p.offsetWidth;p.classList.add('shake');
+      $('err').textContent='Thappu code chellam 🙈 Hint: naan unaku yaaru?';return}
+    $('err').textContent='';
+    playBackgroundMusic();
+    $('lockScreen').classList.add('hide');
+    $('envScreen').classList.remove('hide');
+    document.body.classList.add('read');
+    $('mtag').textContent='Unakkaga oru kadidham';
+    scrollTo(0,0)}
+
+  /* 2) envelope -> letter */
+  function openEnvelope(){
+    const env=$('envelope');
+    if(env.classList.contains('open'))return;
+    env.classList.add('open');
+    setTimeout(()=>{
+      $('envScreen').classList.add('hide');
+      $('read').classList.remove('hide');
+      $('read').classList.remove('unfold');void $('read').offsetWidth;$('read').classList.add('unfold');
+      $('mr').innerHTML='<svg class="i"><use href="#heart"/></svg> Nee, naan, indha vaarthaigal mattum';
+      scrollTo(0,0);start();
+    },1700)}
+
+  $('openBtn').onclick=unlock;
+  $('code').onkeydown=e=>{if(e.key==='Enter')unlock()};
+  $('envelope').onclick=openEnvelope;
+  $('envelope').onkeydown=e=>{if(e.key==='Enter'||e.key===' ')openEnvelope()};
+  $('eye').onclick=()=>{const c=$('code');c.type=c.type==='password'?'text':'password'};
+
+  /* close -> fold back into envelope */
+  $('close').onclick=()=>{
+    clearTimeout(timer);
+    $('read').classList.add('hide');
+    $('envelope').classList.remove('open');
+    $('envScreen').classList.remove('hide');
+    $('mr').innerHTML='<svg class="i"><use href="#lock"/></svg>'};
+
+  /* live clock + together counter */
+  const START=new Date(2024,11,23,0,0,0);
+  const rot=(id,d)=>$(id).setAttribute('transform','rotate('+d+' 606 593)');
+  const p2=n=>String(n).padStart(2,'0');
+  function tick(){
+    const n=new Date(),ms=n.getMilliseconds(),s=n.getSeconds()+ms/1000,mi=n.getMinutes()+s/60,h=(n.getHours()%12)+mi/60;
+    rot('hSc',s*6);rot('hMn',mi*6);rot('hHr',h*30);
+    $('dig').textContent=p2(n.getHours())+':'+p2(n.getMinutes())+':'+p2(n.getSeconds());
+    let y=n.getFullYear()-START.getFullYear(),mo=n.getMonth()-START.getMonth(),d=n.getDate()-START.getDate();
+    const hh=n.getHours(),mm=n.getMinutes(),ss=n.getSeconds();
+    if(d<0){mo--;d+=new Date(n.getFullYear(),n.getMonth(),0).getDate()}
+    if(mo<0){y--;mo+=12}
+    $('uy').textContent=y;$('um').textContent=mo;$('ud').textContent=d;$('uh').textContent=hh;$('un').textContent=mm;$('us').textContent=ss;
+    $('tot').textContent='Mothama '+Math.floor((n-START)/864e5).toLocaleString('en-IN')+' naatkal, innum ennikkittu irukken…';
+    requestAnimationFrame(tick)}
+  tick();
+  </script>
+  </body>
+  </html>
